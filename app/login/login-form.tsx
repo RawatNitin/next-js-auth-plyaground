@@ -2,16 +2,21 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export function LoginForm() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const isLoggedIn = false;
+  const { data: session } = useSession();
 
-  const handleLogin = async () => {};
+  const isLoggedIn = !!session?.user?.email;
 
-  const handleLogout = async () => {};
+  const handleLogin = async () => {
+    signIn();
+  };
+
+  const handleLogout = async () => {
+    signOut();
+  };
 
   return (
     <div
@@ -32,23 +37,12 @@ export function LoginForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button disabled={isLoggedIn} onClick={handleLogin}>
-        Login
-      </button>
 
-      <button disabled={!isLoggedIn} onClick={handleLogout}>
-        Logout
-      </button>
-
-      {isLoggedIn ? "Logged In" : "Logged out"}
+      {isLoggedIn ? (
+        <button onClick={handleLogout}>Logout</button>
+      ) : (
+        <button onClick={handleLogin}>Login</button>
+      )}
     </div>
   );
 }
