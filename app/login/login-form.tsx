@@ -3,34 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type LoginFormProps = {
-  initialLoggedIn: boolean;
-};
-
-export function LoginForm({ initialLoggedIn }: LoginFormProps) {
+export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(initialLoggedIn);
+  const isLoggedIn = false;
 
-  const handleLogin = async () => {
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await response.json();
-    if (data.success) {
-      setIsLoggedIn(true);
-      router.refresh();
-    }
-  };
+  const handleLogin = async () => {};
 
-  const handleLogout = async () => {
-    await fetch("/api/logout", { method: "POST" });
-    setIsLoggedIn(false);
-    router.refresh();
-  };
+  const handleLogout = async () => {};
 
   return (
     <div
